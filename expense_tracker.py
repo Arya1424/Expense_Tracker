@@ -1,14 +1,16 @@
 import streamlit as st
 import sqlite3
 import pandas as pd
-import plotly.express as px
-import plotly.graph_objects as go
+try:
+    import plotly.express as px
+    import plotly.graph_objects as go
+except ImportError:
+    st.error("Plotly not installed. Installing required packages...")
 from datetime import datetime, timedelta
 import numpy as np
 from sklearn.ensemble import IsolationForest
 from sklearn.preprocessing import LabelEncoder
 import io
-import base64
 
 # Page configuration
 st.set_page_config(
@@ -227,7 +229,7 @@ def export_to_csv(df):
     """Export transactions to CSV"""
     return df.to_csv(index=False)
 
-# Streamlit App
+# Main Streamlit App
 def main():
     # Initialize database
     init_database()
@@ -357,22 +359,19 @@ def show_add_transaction():
             )
         
         submitted = st.form_submit_button("💾 Save Transaction", type="primary")
-        
-        if submitted:
-            if description and amount > 0:
-                try:
-                    add_transaction(date, description, amount, category)
-                    st.success(f"✅ Transaction saved: ₹{amount:.2f} for {description}")
-                    st.balloons()
+    
+    if submitted:
+        if description and amount > 0:
+            try:
+                add_transaction(date, description, amount, category)
+                st.success(f"✅ Transaction saved: ₹{amount:.2f} for {description}")
+                st.balloons()
+                st.info("💡 Scroll down to add another transaction or navigate to Dashboard to see your expenses!")
                     
-                    # Show option to add another
-                    if st.button("➕ Add Another Transaction"):
-                        st.rerun()
-                        
-                except Exception as e:
-                    st.error(f"❌ Error saving transaction: {str(e)}")
-            else:
-                st.error("⚠️ Please fill in all required fields!")
+            except Exception as e:
+                st.error(f"❌ Error saving transaction: {str(e)}")
+        else:
+            st.error("⚠️ Please fill in all required fields!")
     
     # Quick add buttons for common expenses
     st.subheader("🚀 Quick Add")
