@@ -157,11 +157,6 @@ ai-expense-tracker/
 ├── requirements.txt        # Python dependencies
 ├── README.md              # Project documentation
 ├── expense_tracker.db     # SQLite database (auto-generated)
-│
-└── screenshots/           # App screenshots (optional)
-    ├── dashboard.png
-    ├── add-transaction.png
-    └── anomalies.png
 ```
 
 ## 🔧 Configuration
